@@ -33,3 +33,11 @@ df["월"] = df["주문일자"].dt.month
 
 report = df.groupby(["월", "카테고리"])["매출액"].agg(총매출 = "sum", 평균매출 = "mean", 거래건수 = "count")
 report = report.reset_index()
+
+by_cat = df.groupby("카테고리")["매출액"].sum().sort_values(ascending=False)
+
+assert df["매출액"].sum() == report["총매출"].sum()
+
+with pd.ExcelWriter("Monthly_Report.xlsx", engine="openpyxl") as writer:
+    report.to_excel(writer, sheet_name="월별카테고리요약", index=False)
+    by_cat.reset_index().to_excel(writer, sheet_name="카테고리별합계", index=False)
