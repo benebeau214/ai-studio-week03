@@ -27,3 +27,9 @@ None
 
 df["단가"] = (pd.to_numeric(df["단가"].astype(str).str.replace(",", ""), errors="coerce")).astype("Int64")
 df["매출액"] = df["단가"] * df["수량"]
+
+df["주문일자"] = pd.to_datetime(df["주문일자"])
+df["월"] = df["주문일자"].dt.month
+
+report = df.groupby(["월", "카테고리"])["매출액"].agg(총매출 = "sum", 평균매출 = "mean", 거래건수 = "count")
+report = report.reset_index()
