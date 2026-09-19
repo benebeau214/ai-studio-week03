@@ -25,7 +25,7 @@ memory usage: 19.7 KB
 None
 '''
 
-df["단가"] = (pd.to_numeric(df["단가"].astype(str).str.replace(",", ""), errors="coerce")).astype("Int64")
+df["단가"] = (pd.to_numeric(df["단가"].astype(str).str.replace(",", "", regex=False), errors="coerce")).astype("Int64")
 df["매출액"] = df["단가"] * df["수량"]
 
 df["주문일자"] = pd.to_datetime(df["주문일자"])
